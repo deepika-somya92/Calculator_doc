@@ -1,12 +1,20 @@
 <html>
-    <body>
-        <form action="/add">
-            <h1> Addition <h1>
-            <input type = "text" name = "operand1">
-            <input type = "text" name = "operand2">
-            <input type = "submit" name = "operator">
-            <!--<input type = "text" name = "result">-->
-            <br><br>
-        <form>
-    </body>
+<head>
+<title></title>
+</head>
+<body>
+<form action="/add" method="post">
+    <h2> Addition </h2>
+    <input type="text" name="operand1"> + <input type="text" name="operand2">
+    <input type="submit" value="Add">
+    <input type="text" name="Result">
+    <br>
+</form>
+<form action="/sub" method="post">
+    <h2> Subtraction </h2>
+    <input type="text" name="subOper1"> + <input type="text" name="subOper2">
+    <input type="submit" value="Sub">
+    <input type="text" name="subRes">
+</form>
+</body>
 </html>

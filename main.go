@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"strings"
+	"strconv"
 )
 
 func add(a, b int) int {
@@ -27,32 +27,65 @@ func mod(a, b int) int {
 	return a % b
 }
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm() //Parse url parameters passed, then parse the response packet for the POST body (request body)
-	// attention: If you do not call ParseForm method, the following data can not be obtained form
-	fmt.Println(r.Form) // print information on server side.
-	fmt.Println("path", r.URL.Path)
-	fmt.Println("scheme", r.URL.Scheme)
-	fmt.Println(r.Form["url_long"])
-	for k, v := range r.Form {
-		fmt.Println("key:", k)
-		fmt.Println("val:", strings.Join(v, ""))
-	}
-	fmt.Fprintf(w, "Hello astaxie!") // write data to response
+type result struct {
+	Operand1 string
+	Operand2 string
+	Result   string
+}
+
+func homeHanlder(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello calculator!")
 }
 
 func addHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("add handler")
+	res := result{Operand1: "", Operand2: "", Result: ""}
+	if r.Method == "GET" {
+		t, _ := template.ParseFiles("home.html")
+		t.Execute(w, res)
+	} else {
+		r.ParseForm()
+		// Convert string to integer
+		oper1, _ := strconv.Atoi(r.Form["operand1"][0])
+		oper2, _ := strconv.Atoi(r.Form["operand2"][0])
+		sum := add(oper1, oper2)
+		// Convert integer to string
+		res.Result = strconv.Itoa(sum)
+		res.Operand1 = r.Form["operand1"][0]
+		res.Operand2 = r.Form["operand2"][0]
+		t, _ := template.ParseFiles("result.html")
+		t.Execute(w, res)
+	}
+}
 
-	fmt.Println(r)
-	fmt.Println("Inside homeHandler...")
-	t, _ := template.ParseFiles("home.html")
-	t.Execute(w, "")
+func subHandler(w http.ResponseWriter, r *http.Request) {
+	type result struct {
+		subOper1 string
+		subOper2 string
+		subRes   string
+	}
+	res := result{subOper1: "", subOper2: "", subRes: ""}
+	if r.Method == "GET" {
+		t, _ := template.ParseFiles("home.html")
+		t.Execute(w, res)
+	} else {
+		r.ParseForm()
+		// Convert string to integer
+		oper1, _ := strconv.Atoi(r.Form["subOper1"][0])
+		oper2, _ := strconv.Atoi(r.Form["subOper2"][0])
+		sum := sub(oper1, oper2)
+		// Convert integer to string
+		res.subRes = strconv.Itoa(sum)
+		res.subOper1 = r.Form["subOper1"][0]
+		res.subOper2 = r.Form["subOper2"][0]
+		t, _ := template.ParseFiles("result.html")
+		t.Execute(w, res)
+	}
 }
 
 func main() {
-	http.HandleFunc("/", homeHandler)
+	http.HandleFunc("/", homeHanlder)
 	http.HandleFunc("/add", addHandler)
+	http.HandleFunc("/sub", subHandler)
 
 	fmt.Println("Calculator Web Application started on port 9090")
 	err := http.ListenAndServe(":9090", nil)
