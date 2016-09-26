@@ -1,20 +1,60 @@
 <html>
 <head>
-<title></title>
+<script>
+function Addition()
+{
+	var a = parseInt(document.getElementById('AddOper1').value);
+	var b = parseInt(document.getElementById('AddOper2').value);
+	var xmlHttp = new XMLHttpRequest()
+	url = "http://localhost:9090/add/" + a + "/" + b;
+	alert("url - " + url)
+	xmlHttp.open("GET", url, false)
+	xmlHttp.send(null)
+	alert("result - " + xmlHttp.responseText)
+	document.getElementById('AddRes').value = a + b;	
+}
+
+function Subtraction()
+{
+	var a = parseInt(document.getElementById('SubOper1').value);
+	var b = parseInt(document.getElementById('SubOper2').value);
+	document.getElementById('SubRes').value = a - b;	
+}
+
+function Multiplication()
+{
+	var a = parseInt(document.getElementById('MulOper1').value);
+	var b = parseInt(document.getElementById('MulOper2').value);
+	document.getElementById('MulRes').value = a * b;	
+}
+
+function Division()
+{
+	var a = parseInt(document.getElementById('DivOper1').value);
+	var b = parseInt(document.getElementById('DivOper2').value);
+	document.getElementById('DivRes').value = a / b;	
+}
+
+</script>
 </head>
+
 <body>
-<form action="/add" method="post">
-    <h2> Addition </h2>
-    <input type="text" name="operand1"> + <input type="text" name="operand2">
-    <input type="submit" value="Add">
-    <input type="text" name="Result">
-    <br>
-</form>
-<form action="/sub" method="post">
-    <h2> Subtraction </h2>
-    <input type="text" name="subOper1"> + <input type="text" name="subOper2">
-    <input type="submit" value="Sub">
-    <input type="text" name="subRes">
-</form>
+	<h1 style="margin-left:8em;"> Calculator Program to using Golang Backend </h1>
+	<h2> Addition </h2>
+	<input id="AddOper1">  + <input id="AddOper2"> = <input id="AddRes">
+	<input type="button" value="Add" onclick="Addition()"> <br> <br>
+	
+	<h2> Subtraction </h2>
+	<input id="SubOper1">  - <input id="SubOper2"> = <input id="SubRes">
+	<input type="button" value="Sub" onclick="Subtraction()"> <br> <br>
+	
+	<h2> Multiplication </h2>
+	<input id="MulOper1">  * <input id="MulOper2"> = <input id="MulRes">
+	<input type="button" value="Mul" onclick="Multiplication()"> <br> <br>
+	
+	<h2> Division </h2>
+	<input id="DivOper1">  / <input id="DivOper2"> = <input id="DivRes">
+	<input type="button" value="Div" onclick="Division()">
 </body>
+
 </html>

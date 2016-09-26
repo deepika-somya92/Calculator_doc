@@ -3,11 +3,13 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
-	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
-func add(a, b int) int {
+func add1(a, b int) int {
 	return a + b
 }
 
@@ -34,63 +36,30 @@ type result struct {
 }
 
 func homeHanlder(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello calculator!")
-}
-
-func addHandler(w http.ResponseWriter, r *http.Request) {
-	res := result{Operand1: "", Operand2: "", Result: ""}
 	if r.Method == "GET" {
-		t, _ := template.ParseFiles("home.html")
-		t.Execute(w, res)
-	} else {
-		r.ParseForm()
-		// Convert string to integer
-		oper1, _ := strconv.Atoi(r.Form["operand1"][0])
-		oper2, _ := strconv.Atoi(r.Form["operand2"][0])
-		sum := add(oper1, oper2)
-		// Convert integer to string
-		res.Result = strconv.Itoa(sum)
-		res.Operand1 = r.Form["operand1"][0]
-		res.Operand2 = r.Form["operand2"][0]
-		t, _ := template.ParseFiles("result.html")
-		t.Execute(w, res)
+		t, _ := template.ParseFiles("home_sample_1.html")
+		t.Execute(w, "")
 	}
 }
 
-func subHandler(w http.ResponseWriter, r *http.Request) {
-	type result struct {
-		subOper1 string
-		subOper2 string
-		subRes   string
-	}
-	res := result{subOper1: "", subOper2: "", subRes: ""}
-	if r.Method == "GET" {
-		t, _ := template.ParseFiles("home.html")
-		t.Execute(w, res)
-	} else {
-		r.ParseForm()
-		// Convert string to integer
-		oper1, _ := strconv.Atoi(r.Form["subOper1"][0])
-		oper2, _ := strconv.Atoi(r.Form["subOper2"][0])
-		sum := sub(oper1, oper2)
-		// Convert integer to string
-		res.subRes = strconv.Itoa(sum)
-		res.subOper1 = r.Form["subOper1"][0]
-		res.subOper2 = r.Form["subOper2"][0]
-		t, _ := template.ParseFiles("result.html")
-		t.Execute(w, res)
-	}
+func add(w http.ResponseWriter, r *http.Request) {
+	log.Println("Responsing to /add request")
+	log.Println(r.UserAgent())
+
+	vars := mux.Vars(r)
+	oper1 := vars["oper1"]
+	oper2 := vars["oper2"]
+	fmt.Println(oper1, oper2)
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintln(w, "Hello:")
 }
 
 func main() {
-	http.HandleFunc("/", homeHanlder)
-	http.HandleFunc("/add", addHandler)
-	http.HandleFunc("/sub", subHandler)
+
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/add/{oper1}/{oper2}", add).Methods("GET")
+	router.HandleFunc("/", homeHanlder).Methods("GET")
 
 	fmt.Println("Calculator Web Application started on port 9090")
-	err := http.ListenAndServe(":9090", nil)
-	if err != nil {
-		fmt.Println("ERROR: ListenAndServe:", err)
-	}
-
+	log.Fatal(http.ListenAndServe(":9090", router))
 }
