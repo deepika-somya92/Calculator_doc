@@ -29,7 +29,7 @@
             url = window.location.href + "mul/" + a + "/" + b;
             xmlHttp.open("GET", url, false)
             xmlHttp.send(null)
-            document.getElementById('MulRes').value = a * b;
+            document.getElementById('MulRes').value = xmlHttp.responseText;
         }
 
         function Division() {
@@ -39,7 +39,7 @@
             url = window.location.href + "div/" + a + "/" + b;
             xmlHttp.open("GET", url, false)
             xmlHttp.send(null)
-            document.getElementById('DivRes').value = a / b;
+            document.getElementById('DivRes').value = xmlHttp.responseText;
         }
     </script>
 </head>
