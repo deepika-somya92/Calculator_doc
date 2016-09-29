@@ -8,5 +8,8 @@ go:
 services:
   - docker
 
-before_install:
+after_success:
   - docker build -t "fedolin/calculator:latest" .
+  - docker login -u=fedolin -p=dockerfedo
+  - docker push fedolin/calculator
+
