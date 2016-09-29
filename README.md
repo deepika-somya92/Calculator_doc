@@ -1,4 +1,6 @@
-Test Result:
+[![Build Status](https://travis-ci.org/fedolin/calculator.svg?branch=master)](https://travis-ci.org/fedolin/calculator)
+
+**Test Results**
 
 === RUN   TestAdd                                                                                                    
 --- PASS: TestAdd (0.00s)                                                                                            
