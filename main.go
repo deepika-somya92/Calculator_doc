@@ -11,7 +11,7 @@ import (
 )
 
 func add(a, b int) int {
-	return a + b + 2
+	return a + b
 }
 
 func sub(a, b int) int {
