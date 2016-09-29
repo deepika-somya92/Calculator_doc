@@ -10,6 +10,6 @@ services:
 
 after_success:
   - docker build -t "fedolin/calculator:latest" .
-  - docker login -u=fedolin -p=dockerfedo
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push fedolin/calculator
 
