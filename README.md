@@ -1,6 +1,3 @@
-[![Build Status](http://10.93.24.57:8080/job/Calculator-Setup/badge/icon)](http://10.93.24.57:8080/job/Calculator-Setup/)
-
-
 Test Result:
 
 === RUN   TestAdd                                                                                                    
