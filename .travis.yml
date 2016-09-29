@@ -7,3 +7,6 @@ go:
 
 services:
   - docker
+
+before_install:
+  - docker build -t "fedolin/calculator:latest" .
